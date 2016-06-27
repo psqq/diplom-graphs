@@ -1,0 +1,25 @@
+{
+  "name": "semigroups",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "node watch.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "coffee-loader": "^0.7.2",
+    "coffee-script": "^1.10.0",
+    "webpack": "^1.13.1",
+    "lodash": "^4.13.1",
+    "jquery": "^3.0.0"
+  },
+  "dependencies": {
+    "mousetrap": "^1.6.0",
+    "node-notifier": "^4.6.0",
+    "watch": "^0.19.1",
+    "webpack": "^1.13.1"
+  }
+}

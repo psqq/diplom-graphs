@@ -1,4 +1,5 @@
 
+CanvasGraphConstructor = require './CanvasGraphConstructor'
 GraphBuilder = require './GraphBuilder'
 
 
@@ -20,7 +21,17 @@ mainloop = ->
     requestAnimationFrame step
 
 
+g = GraphBuilder.builder1
+    vertices:
+        0: x: 100, y: 100
+        1: x: 50, y: 50
+        2: x: 150, y: 50
+    links:
+        0: [1, 2]
+
 mainloop()
-gb1 = new GraphBuilder $('#graphbuilder1').get(0)
+gb1 = new CanvasGraphConstructor $('#graphbuilder1').get(0), g
 mainloop_objects.push gb1
 
+
+_.defaults window, {gb1}

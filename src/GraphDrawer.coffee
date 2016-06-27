@@ -24,22 +24,16 @@ class GraphDrawer
         for l in @graph.links
             a = @graph.get_vinfo l.from
             b = @graph.get_vinfo l.to
-            @ctx.beginPath()
-            @ctx.moveTo a.x, a.y
-            @ctx.lineTo b.x, b.y
-            @ctx.stroke()
+            utils.draw_line @ctx, a, b
 
     draw_vertices: () ->
-        @ctx.font = "#{FONTSZ}px Monospace"
         for name, info of @graph.vinfo
-            @ctx.beginPath()
-            @ctx.arc info.x, info.y, RADIIUS, 0, 2 * Math.PI
-            @ctx.fillStyle = 'black'
-            @ctx.fill()
-            @ctx.fillStyle = 'white'
-            @ctx.textAlign = 'center'
-            @ctx.textBaseLine = 'middle'
-            @ctx.fillText name, info.x, info.y + FONTSZ/4
+            utils.draw_circle_with_text(
+                @ctx, info.x, info.y, RADIIUS, name, {
+                    fontsz: FONTSZ, fontFamily: 'Monospace',
+                    circleColor: 'black', textColor: 'white'
+                }
+            )
 
     render: () ->
         @ctx.save()

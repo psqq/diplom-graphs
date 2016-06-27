@@ -21,7 +21,8 @@ class Graph
     # === VERTICES === 
     count_vertices: -> @vertices.length
 
-    is_vertex: (name) -> name in @vertices
+    is_vertex: (name) ->
+        return name in @vertices
 
     get_vinfo: (name) -> @vinfo[name]
 
@@ -80,5 +81,6 @@ class Graph
         @links = res
         @changed() if call_changed
 
-    is_link: (v1, v2) -> !!@map[v1][v2]
+    is_link: (v1, v2) ->
+        return !!@map[v1][v2]
 

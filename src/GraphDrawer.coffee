@@ -10,7 +10,6 @@ module.exports =
 class GraphDrawer
     
     constructor: (@graph, @ctx) ->
-        @graph.on_change => @render()
 
     # === VERTICES === 
     get_vertex_byxy: (pos) ->
@@ -22,9 +21,9 @@ class GraphDrawer
 
     # === RENDER ===
     draw_links: () ->
-        for l in @links
-            a = @vertices[l.a]
-            b = @vertices[l.b]
+        for l in @graph.links
+            a = @graph.get_vinfo l.from
+            b = @graph.get_vinfo l.to
             @ctx.beginPath()
             @ctx.moveTo a.x, a.y
             @ctx.lineTo b.x, b.y
@@ -32,22 +31,19 @@ class GraphDrawer
 
     draw_vertices: () ->
         @ctx.font = "#{FONTSZ}px Monospace"
-        for name, v of @vertices
+        for name, info of @graph.vinfo
             @ctx.beginPath()
-            @ctx.arc v.x, v.y, RADIIUS, 0, 2 * Math.PI
+            @ctx.arc info.x, info.y, RADIIUS, 0, 2 * Math.PI
             @ctx.fillStyle = 'black'
             @ctx.fill()
             @ctx.fillStyle = 'white'
             @ctx.textAlign = 'center'
             @ctx.textBaseLine = 'middle'
-            @ctx.fillText v.name, v.x, v.y + FONTSZ/4
+            @ctx.fillText name, info.x, info.y + FONTSZ/4
 
     render: () ->
         @ctx.save()
-        @draw_links @ctx
-        @draw_vertices @ctx
+        @draw_links()
+        @draw_vertices()
         @ctx.restore()
-
-
-module.exports = GraphImage
 

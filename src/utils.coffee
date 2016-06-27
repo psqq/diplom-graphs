@@ -5,9 +5,11 @@ vec2 = (x, y) -> {x, y}
 
 # utils for html elements
 get_mousepos_in_element = (el, e) ->
-    left = el.offsetLeft + el.clientLeft
-    top = el.offsetTop + el.clientTop
-    return { x: e.pageX - left, y: e.pageY - top }
+    offset = $(el).offset()
+    return { 
+        x: e.pageX - offset.left, 
+        y: e.pageY - offset.top 
+    }
 
 
 

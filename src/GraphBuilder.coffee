@@ -10,6 +10,7 @@ class GraphBuilder
         @can = $("<canvas>").get 0
         @ctx = @can.getContext '2d'
         @can.width = @can.height = 400
+        @graph_drawer = new GraphDrawer @graph, @ctx
         @mouse = { x: 0, y: 0 }
         @focus = false
         @handle_events()
@@ -34,12 +35,6 @@ class GraphBuilder
                     @mouse.linkend = _.clone utils.vec2 @mouse.x, @mouse.y
 
         $(@can).mousedown (e) =>
-            v = @graph_image.get_vertex_byxy @mouse
-            unless v?
-                return
-            @mouse.target = v
-            @mouse.dragtype = "move"
-            @mouse.dragtype = "link" if e.ctrlKey
 
         $(@can).mouseup (e) =>
             if @mouse.target? and @mouse.dragtype == "link"
@@ -50,16 +45,24 @@ class GraphBuilder
             @mouse.dragtype = "none"
             @mouse.linkend = null
 
-        Mousetrap.bind "a", (e) =>
+        # Add vertex
+        Mousetrap.bind "v", (e) =>
             return unless @focus
             name = "" + @graph.count_vertices()
             @graph.add_vertex name, {
                 x: @mouse.x, y: @mouse.y, name
             }
 
+        # Add link
         Mousetrap.bind "l", (e) =>
             return unless @focus
-            console.log l.from.name, l.to.name for l in @links
+            vname = @graph_drawer.get_vertex_byxy @mouse
+            console.log vname
+
+        # Print other info
+        Mousetrap.bind "1", (e) =>
+            return unless @focus
+            console.log @mouse
 
     update: (dt) ->
 
@@ -72,11 +75,8 @@ class GraphBuilder
             @ctx.lineTo b.x, b.y
             @ctx.stroke()
 
-    draw_graph: ->
-
-
     render: ->
         @ctx.clearRect 0, 0, @can.width, @can.height
         @draw_draglink()
-        @graph_image.render @ctx
+        @graph_drawer.render()
 

@@ -23,6 +23,8 @@ class Graph
 
     is_vertex: (name) -> name in @vertices
 
+    get_vinfo: (name) -> @vinfo[name]
+
     set_vinfo: (name, info) ->
         unless @vinfo[name]?
             @vinfo[name] = info
@@ -31,7 +33,7 @@ class Graph
 
     add_vertex: (name, info, call_changed = true) ->
         @set_vinfo name, info
-        return if is_vertex(name)
+        return if @is_vertex name
         @vertices.push name
         @map[name] = {}
         @changed() if call_changed

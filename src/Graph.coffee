@@ -21,7 +21,7 @@ class Graph
 
     # === VERTICES === 
     generate_name: ->
-        @freenames.sort()
+        @freenames.sort (a, b) -> a - b
         res = ""
         while @freenames.length > 0
             v = "" + @freenames.shift()

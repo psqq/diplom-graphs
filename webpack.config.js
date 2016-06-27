@@ -21,11 +21,11 @@ module.exports = {
     },
 
     plugins: [
-        new webpack.ProvidePlugin({
-            _: __dirname + '/node_modules/lodash/lodash.min.js',
-            $: __dirname + '/node_modules/jquery/dist/jquery.min.js',
-            // Mousetrap: __dirname + '/node_modules/mousetrap/mousetrap.min.js'
-        })
+        // new webpack.ProvidePlugin({
+        //     _: __dirname + '/node_modules/lodash/lodash.min.js',
+        //     $: __dirname + '/node_modules/jquery/dist/jquery.min.js',
+        //     // Mousetrap: __dirname + '/node_modules/mousetrap/mousetrap.min.js'
+        // })
     ],
 
     devtool: 'inline-source-map',

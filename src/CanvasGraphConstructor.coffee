@@ -16,8 +16,7 @@ class CanvasGraphConstructor
         }
         @focus = false
         @handle_events()
-        @container = $(@container).get 0 if _.isString @container
-        @container.appendChild @can
+        $(@container).append @can
         @graph_drawer = new GraphDrawer @graph, @ctx
 
     update_mouse: (e) ->
@@ -63,6 +62,10 @@ class CanvasGraphConstructor
 
                 # Delete vertex
                 when 'd'
+                    if e.shiftKey
+                        for v in _.clone @graph.vertices
+                            @graph.del_vertex v
+                        return
                     vname = @graph_drawer.get_vertex_byxy @mouse
                     @graph.del_vertex vname
 

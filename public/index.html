@@ -5,10 +5,28 @@
     <title></title>
     <meta charset="UTF-8">
     <link href="css/style.css" rel="stylesheet">
+    <script src="./libs/jquery.min.js"></script>
+    <script src="./libs/lodash.min.js"></script>
 </head>
 
 <body>
 
+<h2>Описание</h2>
+
+<u>Команды</u>:<br>
+<ul>
+    <li><b>v</b> - добавить вершину</li>
+    <li><b>l</b> - добавить ребро</li>
+    <li><b>d</b> - удалить вершину</li>
+    <li><b>D</b> - удалить все вершины</li>
+    <li><b>r</b> - поменять корневую вершину (отмечается красным цветом)</li>
+    <li><b>q</b> - ввести текстовую команду</li>
+        <ul>
+            <li><b>dist v1 v2</b> - находит расстояние между вершинами v1 и v2</li>
+        </ul>
+    </li>
+    <li>Вершины можно перетаскивать мышью</li>
+</ul>
 
 <h2>Граф 1</h2>
 <div id="gt1"></div>
@@ -17,8 +35,6 @@
 <div id="gt2"></div>
 
 
-<script src="./libs/jquery.min.js"></script>
-<script src="./libs/lodash.min.js"></script>
 <script src="./all.js"></script>
 
 </body>

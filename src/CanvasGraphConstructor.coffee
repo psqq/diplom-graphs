@@ -53,12 +53,21 @@ class CanvasGraphConstructor
             return unless @focus
             ch = String.fromCharCode(e.keyCode).toLowerCase()
             switch ch
+                # Set new root
+                when 'r'
+                    vname = @graph_drawer.get_vertex_byxy @mouse
+                    @graph.root = vname
+
                 # Add vertex
                 when 'v'
                     name = @graph.generate_name()
                     @graph.add_vertex name, {
                         x: @mouse.x, y: @mouse.y, name
                     }
+
+                # Query for graph
+                when 'q'
+                    cmd = prompt("Введите команду")
 
                 # Delete vertex
                 when 'd'

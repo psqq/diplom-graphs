@@ -10,6 +10,17 @@ class Graph
         @vinfo = {} # additional information for vertex
         @change_listeners = []
         @freenames = []
+        @root = null
+
+    # === FUNCTIONS ====
+    is_root: (v) -> v == @root
+    set_root: (v) (r) -> 
+        return if r == @root
+        @root = r
+        @changed()
+
+    make_dfs_info: ->
+        
 
     # === EVENTS ===
     on_change: (callback) -> 
@@ -46,6 +57,8 @@ class Graph
         return if @is_vertex name
         @vertices.push name
         @map[name] = {}
+        if not @root?
+            @root = name
         @changed() if call_changed
 
     del_vertex: (name, call_changed = true) ->

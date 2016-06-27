@@ -28,10 +28,11 @@ class GraphDrawer
 
     draw_vertices: () ->
         for name, info of @graph.vinfo
+            textColor = if @graph.is_root name then 'red' else 'white'
             utils.draw_circle_with_text(
                 @ctx, info.x, info.y, RADIIUS, name, {
                     fontsz: FONTSZ, fontFamily: 'Monospace',
-                    circleColor: 'black', textColor: 'white'
+                    circleColor: 'black', textColor: textColor
                 }
             )
 

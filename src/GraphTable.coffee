@@ -10,8 +10,8 @@ module.exports =
 class GraphTable
     constructor: (@container, @graph = new Graph) ->
         @id = "gt" + counter++
-        div_for_constructor = $("<div>").attr('id', @id + ".gb").get 0
-        div_for_graph_info = $("<div>").attr('id', @id + ".info").get 0
+        div_for_constructor = $("<div>").attr('id', @id + "gb").get 0
+        div_for_graph_info = $("<div>").attr('id', @id + "info").get 0
 
         @el = utils.make_talbe [
             ['Рисунок графа', 'Информация о графе'], 

@@ -71,7 +71,7 @@ class CanvasGraphConstructor
     draw_draglink: ->
         if @mouse.target? and @mouse.dragtype == "link" and @mouse.linkend?
             v = @graph.get_vinfo @mouse.target
-            utils.draw_line v, @mouse
+            utils.draw_line @ctx, v, @mouse
 
     render: ->
         @ctx.clearRect 0, 0, @can.width, @can.height

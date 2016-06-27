@@ -21,3 +21,8 @@ builder1 = (options) ->
             g.add_link ""+a, ""+b
     return g
 
+module.exports.
+make_options_for_builder1 = (graph) ->
+    vertices = _.clone graph.vinfo
+    links = {}
+    return {vertices, links}

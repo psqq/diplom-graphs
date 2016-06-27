@@ -32,8 +32,8 @@ class CanvasGraphConstructor
             @update_mouse e
             if @mouse.target
                 if @mouse.dragtype == "move"
-                    vertex_name = @mouse.target.name
-                    @graph_image.move_vertex vertex_name, @mouse
+                    vertex_name = @mouse.target
+                    @graph.set_vinfo vertex_name, utils.vec2(@mouse.x, @mouse.y)
                 if @mouse.dragtype == "link"
                     @mouse.linkend = _.clone utils.vec2 @mouse.x, @mouse.y
 
@@ -41,6 +41,9 @@ class CanvasGraphConstructor
             vname = @graph_drawer.get_vertex_byxy @mouse
             if vname? and @mouse.target? and @mouse.dragtype == "link"
                 @graph.add_link @mouse.target, vname
+                return
+            @mouse.target = vname
+            @mouse.dragtype = "move"
 
         $(@can).mouseup (e) =>
             @mouse.target = null

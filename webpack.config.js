@@ -13,7 +13,7 @@ module.exports = {
             loader: "coffee"
         }],
         noParse: [
-            /lodash/, /jquery/, /mousetrap/
+            /lodash/, /jquery/
         ]
     },
     resolve: {
@@ -24,10 +24,10 @@ module.exports = {
         new webpack.ProvidePlugin({
             _: __dirname + '/node_modules/lodash/lodash.min.js',
             $: __dirname + '/node_modules/jquery/dist/jquery.min.js',
-            Mousetrap: __dirname + '/node_modules/mousetrap/mousetrap.min.js'
+            // Mousetrap: __dirname + '/node_modules/mousetrap/mousetrap.min.js'
         })
     ],
 
-    devtool: 'inline-source-map'
+    devtool: 'inline-source-map',
 
 };

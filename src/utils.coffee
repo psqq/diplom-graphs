@@ -1,9 +1,9 @@
 
-# maths utils
+# ===== maths utils =====
 dist = (a, b) -> Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2))
 vec2 = (x, y) -> {x, y}
 
-# utils for html elements
+# ===== utils for html elements ===== 
 get_mousepos_in_element = (el, e) ->
     offset = $(el).offset()
     return { 
@@ -11,7 +11,25 @@ get_mousepos_in_element = (el, e) ->
         y: e.pageY - offset.top 
     }
 
-# Graphics
+# create html table by js matrix
+# o: { header: bool }
+make_talbe = (arr, o = {}) ->
+    tbl = document.createElement 'table'
+    for line, i in arr
+        tr = document.createElement 'tr'
+        for val, j in line
+            t = if o.header and i == 0 then 'th' else 'td'
+            cell = document.createElement t
+            val = arr[i][j]
+            if _.isString val
+                cell.innerHTML = val
+            else
+                cell.appendChild val
+            tr.appendChild cell
+        tbl.appendChild tr
+    return tbl
+
+# ===== Graphics =====
 draw_line = (ctx, a, b) ->
     ctx.beginPath()
     ctx.moveTo a.x, a.y
@@ -34,7 +52,7 @@ module.exports = {
     # math utils
     dist, vec2
     # html utils
-    get_mousepos_in_element
+    get_mousepos_in_element, make_talbe
     # Graphics
     draw_line, draw_circle_with_text
 }

@@ -9,6 +9,7 @@ class Graph
         @map = {}
         @vinfo = {} # additional information for vertex
         @change_listeners = []
+        @freenames = []
 
     # === EVENTS ===
     on_change: (callback) -> 
@@ -19,6 +20,14 @@ class Graph
             callback(this)
 
     # === VERTICES === 
+    generate_name: ->
+        @freenames.sort()
+        res = ""
+        while @freenames.length > 0
+            v = "" + @freenames.shift()
+            return v if not @is_vertex v
+        return "" + @count_vertices()
+
     count_vertices: -> @vertices.length
 
     is_vertex: (name) ->
@@ -40,8 +49,10 @@ class Graph
         @changed() if call_changed
 
     del_vertex: (name, call_changed = true) ->
-        return if not is_vertex(name)
+        return if not @is_vertex(name)
         _.pull @vertices, name
+        delete @vinfo[name]
+        @freenames.push parseInt(name)
         @del_links_with_vertex name, false
         @changed() if call_changed
 

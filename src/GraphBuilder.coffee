@@ -25,4 +25,7 @@ module.exports.
 make_options_for_builder1 = (graph) ->
     vertices = _.clone graph.vinfo
     links = {}
+    for {from, to} in graph.links
+        links[from] = [] if not links[from]?
+        links[from].push to
     return {vertices, links}

@@ -16,6 +16,7 @@ class CanvasGraphConstructor
         }
         @focus = false
         @handle_events()
+        @container = $(@container).get 0 if _.isString @container
         @container.appendChild @can
         @graph_drawer = new GraphDrawer @graph, @ctx
 
@@ -49,25 +50,31 @@ class CanvasGraphConstructor
             @mouse.target = null
             @mouse.dragtype = null
 
-        # Add vertex
-        Mousetrap.bind "v", (e) =>
+        $(document).keydown (e) =>
             return unless @focus
-            name = "" + @graph.count_vertices()
-            @graph.add_vertex name, {
-                x: @mouse.x, y: @mouse.y, name
-            }
+            ch = String.fromCharCode(e.keyCode).toLowerCase()
+            switch ch
+                # Add vertex
+                when 'v'
+                    name = @graph.generate_name()
+                    @graph.add_vertex name, {
+                        x: @mouse.x, y: @mouse.y, name
+                    }
 
-        # Add link
-        Mousetrap.bind "l", (e) =>
-            return unless @focus
-            vname = @graph_drawer.get_vertex_byxy @mouse
-            @mouse.target = vname
-            @mouse.dragtype = "link"
+                # Delete vertex
+                when 'd'
+                    vname = @graph_drawer.get_vertex_byxy @mouse
+                    @graph.del_vertex vname
 
-        # Print other info
-        Mousetrap.bind "1", (e) =>
-            return unless @focus
-            console.log @mouse
+                # Add link
+                when 'l'
+                    vname = @graph_drawer.get_vertex_byxy @mouse
+                    @mouse.target = vname
+                    @mouse.dragtype = "link"
+
+                # Print other info
+                when '1'
+                    console.log @mouse
 
     update: (dt) ->
 

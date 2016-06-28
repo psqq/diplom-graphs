@@ -11,6 +11,10 @@ class GraphInfo
         @el = $("<div>").get 0
         $(@container).append @el
         @info =
+            "leaves":
+                title: "Листья:"
+                func: =>
+                    @graph.leaves().join ', '
             "count_vertices":
                 title: "Количество вершин:",
                 func: => @graph.count_vertices()
@@ -26,11 +30,29 @@ class GraphInfo
         @graph.on_change => @update_info()
         @update_info()
 
+        @change_listeners = []
+        @res = ""
+
+    # ===== CHANGES =====
+    # set_res: (new_res) ->
+    #     return if @res == new_res
+    #     @res = new_res
+    #     @changed()
+
+    # on_change: (callback) -> 
+    #     @change_listeners.push callback
+
+    # changed: -> 
+    #     for callback in @change_listeners
+    #         callback(this)
+
+    # ===== INFO =====
     invariant3: ->
         res = {}
-        for v in @graph.vertices
-            res[v] = @graph.vinfo[v].disttoroot
+        # for v in @graph.vertices
+        #     res[v] = @graph.vinfo[v].disttoroot
         # convert res to string
+        res.dists_to_leaves = @graph.dists_to_leaves()
         res = JSON.stringify res, null, 2
         return $("<pre>#{res}</pre>")
 

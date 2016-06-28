@@ -56,7 +56,7 @@ class CanvasGraphConstructor
                 # Set new root
                 when 'r'
                     vname = @graph_drawer.get_vertex_byxy @mouse
-                    @graph.root = vname
+                    @graph.set_root vname
 
                 # Add vertex
                 when 'v'
@@ -68,6 +68,16 @@ class CanvasGraphConstructor
                 # Query for graph
                 when 'q'
                     cmd = prompt("Введите команду")
+                    args = _.pull cmd.split(/\s/), ''
+                    _print = (s) -> console.log s
+                    switch args[0]
+                        
+                        when "dist"
+                            break if args.length < 3
+                            _print "Расстояние между вершинами: " + @graph.dist(args[1], args[2])
+                        
+                        when "leaves"
+                            _print @graph.leaves args[1]
 
                 # Delete vertex
                 when 'd'

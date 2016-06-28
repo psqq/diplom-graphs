@@ -12,11 +12,15 @@ class Graph
         @freenames = []
         @root = null
         @is_changes_lock = false
+        @is_updated = false
 
     # === OTHER ====
     # update all info into this graph
     update: ->
-        @dfs()
+        return if @is_updated
+        for v in @vertices
+            @vinfo[v].bfs = @make_bfs_info v
+        @is_updated = false
 
     is_root: (v) -> v == @root
     set_root: (r) -> 
@@ -24,28 +28,52 @@ class Graph
         @root = r
         @changed()
 
-    dfs: ->
-        return if not @root?
-        q = [@root]
-        @vinfo[@root].disttoroot = 0
-        @vinfo[@root].subvertices = []
+    leaves: (root = @root) ->
+        @update()
+        res = []
+        rootbfs = @vinfo[root].bfs
+        for u in @vertices
+            if rootbfs[u].subvertices.length == 0
+                res.push u
+        return res
+
+    make_bfs_info: (s) ->
+        q = [s]
         used = {}
-        used[@root] = true
+        used[s] = true
+        res = {}
+        res[u] = {} for u in @vertices
+        res[s].dist = 0
+        res[s].subvertices = []
         while q.length > 0
             v = q.shift()
+            res[v].subvertices = [] if not res[v].subvertices?
             for u in @vertices
                 if @is_link(v, u) and not used[u]
-                    @vinfo[v].subvertices = [] if not @vinfo[v].subvertices?
-                    @vinfo[v].subvertices.push u
-                    @vinfo[u].disttoroot = @vinfo[v].disttoroot + 1
-                    q.push u
+                    res[v].subvertices.push u
+                    res[u].dist = res[v].dist + 1
                     used[u] = true
+                    q.push u
+        return res
+
+    dist: (u, v) ->
+        return if not @is_vertex(u) or not @is_vertex(v)
+        @update()
+        res = @vinfo[u].bfs[v].dist
+        return res
+
+    dists_to_leaves: (v) ->
+        res = []
+        for l in @leaves()
+            res.push @dist l, v
+        return res
 
     # === CHANGES ===
     on_change: (callback) -> 
         @change_listeners.push callback
 
     changed: -> 
+        @is_updated = false
         return if @is_changes_lock
         for callback in @change_listeners
             callback(this)

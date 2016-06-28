@@ -11,3 +11,10 @@ td {
     padding: 5px;
     border: 1px solid black;
 }
+#result {
+    position: absolute;
+    right: 400px;
+    top: 0px;
+    width: 400px;
+    height: 400px;
+}

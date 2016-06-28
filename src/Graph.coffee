@@ -8,11 +8,11 @@ class Graph
         @links = []
         @map = {}
         @vinfo = {} # additional information for vertex
-        @change_listeners = []
         @freenames = []
         @root = null
         @is_changes_lock = false
         @is_updated = false
+        @change_listeners = []
 
     # === OTHER ====
     # update all info into this graph
@@ -29,6 +29,7 @@ class Graph
         @changed()
 
     leaves: (root = @root) ->
+        return [] if not @is_vertex root
         @update()
         res = []
         rootbfs = @vinfo[root].bfs
@@ -38,6 +39,7 @@ class Graph
         return res
 
     make_bfs_info: (s) ->
+        return [] if not @is_vertex s
         q = [s]
         used = {}
         used[s] = true
@@ -91,7 +93,19 @@ class Graph
         return res
 
     invariant3_as_str: ->
+        @update()
         return _.values(@invariant3(',')).sort().join ';'
+
+    clear: ->
+        @vertices = []
+        @links = []
+        @map = {}
+        @vinfo = {} # additional information for vertex
+        @freenames = []
+        @root = null
+        @is_changes_lock = false
+        @is_updated = false
+        @changed()
 
     # === CHANGES ===
     on_change: (callback) -> 
@@ -121,6 +135,7 @@ class Graph
     count_vertices: -> @vertices.length
 
     is_vertex: (name) ->
+        return false if not name?
         return name in @vertices
 
     get_vinfo: (name) -> @vinfo[name]

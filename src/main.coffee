@@ -2,6 +2,7 @@
 CanvasGraphConstructor = require './CanvasGraphConstructor'
 GraphBuilder = require './GraphBuilder'
 GraphTable = require './GraphTable'
+Result = require './Result'
 
 
 mainloop_objects = []
@@ -32,6 +33,7 @@ g1 = GraphBuilder.builder1 {"vertices":{"0":{"x":198,"y":375.1875},"1":{"x":93,"
 g2 = GraphBuilder.builder1 {"vertices":{"0":{"x":191,"y":380.375,"name":"0"},"1":{"x":50,"y":320.375,"name":"1"},"2":{"x":309,"y":303.375,"name":"2"},"3":{"x":68,"y":190.375,"name":"3"},"4":{"x":306,"y":180.375,"name":"4"},"5":{"x":65,"y":71.375,"name":"5"},"6":{"x":184,"y":187.375,"name":"6"},"7":{"x":266,"y":89.375,"name":"7"},"8":{"x":352,"y":82.375,"name":"8"},"9":{"x":177,"y":297.375,"name":"9"}},"links":{"0":["2","1","9"],"1":["3"],"2":["4"],"3":["5"],"4":["7","8"],"6":["9"]}}
 
 gt = [new GraphTable("#gt1", g1), new GraphTable "#gt2", g2]
+r = new Result g1, g2, "#inv3g1", "#inv3g2", "#global_res"
 mainloop_objects = mainloop_objects.concat gt
 
 

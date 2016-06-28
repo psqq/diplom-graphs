@@ -82,8 +82,7 @@ class CanvasGraphConstructor
                 # Delete vertex
                 when 'd'
                     if e.shiftKey
-                        for v in _.clone @graph.vertices
-                            @graph.del_vertex v
+                        @graph.clear()
                         return
                     vname = @graph_drawer.get_vertex_byxy @mouse
                     @graph.del_vertex vname

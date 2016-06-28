@@ -56,7 +56,7 @@ class Graph
                     q.push u
         return res
 
-    dist: (u, v) ->
+    dist: (u, v = @root) ->
         return if not @is_vertex(u) or not @is_vertex(v)
         @update()
         res = @vinfo[u].bfs[v].dist
@@ -67,6 +67,31 @@ class Graph
         for l in @leaves()
             res.push @dist l, v
         return res
+
+    next_vertices: (v) ->
+        return @vinfo[@root].bfs[v].subvertices
+
+    previous_vertices: (v) ->
+        res = []
+        rootbfs = @vinfo[@root].bfs
+        for u in @vertices
+            if v in rootbfs[u].subvertices
+                res.push u
+        return res
+
+    invariant3: (sep = ', ') ->
+        res = {}
+        for v in @vertices
+            t = []
+            t[0] = @dist v
+            t[1] = @previous_vertices(v).length
+            t[2] = @next_vertices(v).length
+            t[3] = '(' + @dists_to_leaves(v).join(sep) + ')'
+            res[v] = t.join sep
+        return res
+
+    invariant3_as_str: ->
+        return _.values(@invariant3(',')).sort().join ';'
 
     # === CHANGES ===
     on_change: (callback) -> 

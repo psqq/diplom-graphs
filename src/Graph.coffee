@@ -14,7 +14,7 @@ class Graph
 
     # === FUNCTIONS ====
     is_root: (v) -> v == @root
-    set_root: (v) (r) -> 
+    set_root: (r) -> 
         return if r == @root
         @root = r
         @changed()

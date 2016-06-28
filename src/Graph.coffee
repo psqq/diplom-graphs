@@ -13,7 +13,11 @@ class Graph
         @root = null
         @is_changes_lock = false
 
-    # === FUNCTIONS ====
+    # === OTHER ====
+    # update all info into this graph
+    update: ->
+        @dfs()
+
     is_root: (v) -> v == @root
     set_root: (r) -> 
         return if r == @root
@@ -21,7 +25,21 @@ class Graph
         @changed()
 
     dfs: ->
-        2 if 1
+        return if not @root?
+        q = [@root]
+        @vinfo[@root].disttoroot = 0
+        @vinfo[@root].subvertices = []
+        used = {}
+        used[@root] = true
+        while q.length > 0
+            v = q.shift()
+            for u in @vertices
+                if @is_link(v, u) and not used[u]
+                    @vinfo[v].subvertices = [] if not @vinfo[v].subvertices?
+                    @vinfo[v].subvertices.push u
+                    @vinfo[u].disttoroot = @vinfo[v].disttoroot + 1
+                    q.push u
+                    used[u] = true
 
     # === CHANGES ===
     on_change: (callback) -> 

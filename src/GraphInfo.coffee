@@ -27,11 +27,15 @@ class GraphInfo
         @update_info()
 
     invariant3: ->
+        res = {}
+        for v in @graph.vertices
+            res[v] = @graph.vinfo[v].disttoroot
         # convert res to string
         res = JSON.stringify res, null, 2
         return $("<pre>#{res}</pre>")
 
     update_info: ->
+        @graph.update()
         for id, o of @info
             id = @id + id
             res = o.func()

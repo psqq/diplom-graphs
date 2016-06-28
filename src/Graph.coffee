@@ -11,6 +11,7 @@ class Graph
         @change_listeners = []
         @freenames = []
         @root = null
+        @is_changes_lock = false
 
     # === FUNCTIONS ====
     is_root: (v) -> v == @root
@@ -19,16 +20,23 @@ class Graph
         @root = r
         @changed()
 
-    make_dfs_info: ->
-        
+    dfs: ->
+        2 if 1
 
-    # === EVENTS ===
+    # === CHANGES ===
     on_change: (callback) -> 
         @change_listeners.push callback
 
     changed: -> 
+        return if @is_changes_lock
         for callback in @change_listeners
             callback(this)
+
+    lock_changes: ->
+        @is_changes_lock = true
+
+    unlock_changes: ->
+        @is_changes_lock = false
 
     # === VERTICES === 
     generate_name: ->
@@ -52,22 +60,30 @@ class Graph
             return
         @vinfo[name][k] = v for k,v of info if info?
 
-    add_vertex: (name, info, call_changed = true) ->
+    add_vertex: (name, info) ->
         @set_vinfo name, info
         return if @is_vertex name
         @vertices.push name
         @map[name] = {}
         if not @root?
             @root = name
-        @changed() if call_changed
+        @changed()
 
-    del_vertex: (name, call_changed = true) ->
+    del_vertex: (name) ->
         return if not @is_vertex(name)
+
+        prev_lock_status = @is_changes_lock
+        @lock_changes()
+
         _.pull @vertices, name
         delete @vinfo[name]
         @freenames.push parseInt(name)
-        @del_links_with_vertex name, false
-        @changed() if call_changed
+        @del_links_with_vertex name
+        if name == @root
+            @root = if @vertices.length > 0 then @vertices[0] else null
+
+        @is_changes_lock = prev_lock_status
+        @changed()
 
     # === LINKS === 
     count_links: -> 
@@ -77,25 +93,25 @@ class Graph
         arr = [v1, v2].sort()
         return { from: arr[0], to: arr[1] }
 
-    add_link: (v1, v2, call_changed = true) ->
+    add_link: (v1, v2) ->
         return if @is_link(v1, v2)
         @links.push @_make_link(v1, v2)
         @map[v1][v2] = @map[v2][v1] = true
-        @changed() if call_changed
+        @changed()
 
-    del_link: (v1, v2, call_changed = true) ->
+    del_link: (v1, v2) ->
         p = (l) -> (l.from == v1 and l.to == v2) or (l.from == v2 and l.to == v1)
-        @del_linkp p, call_changed
+        @del_linkp p
 
-    del_links_with_vertex: (v, call_changed = true) ->
+    del_links_with_vertex: (v) ->
         p = (l) -> v in _.values l
-        @del_linkp p, call_changed
+        @del_linkp p
 
-    del_link_from_map: (v1, v2, call_changed = true) ->
+    del_link_from_map: (v1, v2) ->
         @map[v1][v2] = @map[v2][v1] = false
-        @changed() if call_changed
+        @changed()
 
-    del_linkp: (predicate, call_changed = true) ->
+    del_linkp: (predicate) ->
         res = []
         for l in @links
             if predicate l
@@ -103,7 +119,7 @@ class Graph
             else
                 res.push l
         @links = res
-        @changed() if call_changed
+        @changed()
 
     is_link: (v1, v2) ->
         return !!@map[v1][v2]

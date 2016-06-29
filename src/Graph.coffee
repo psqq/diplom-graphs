@@ -51,6 +51,8 @@ class Graph
             v = q.shift()
             res[v].subvertices = [] if not res[v].subvertices?
             for u in @vertices
+                if used[u] and res[u].dist > res[v].dist
+                    res[v].subvertices.push u
                 if @is_link(v, u) and not used[u]
                     res[v].subvertices.push u
                     res[u].dist = res[v].dist + 1

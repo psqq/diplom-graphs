@@ -69,7 +69,9 @@ class CanvasGraphConstructor
                 when 'q'
                     cmd = prompt("Введите команду")
                     args = _.pull cmd.split(/\s/), ''
-                    _print = (s) -> console.log s
+                    _print = (s) -> 
+                        console.log s
+                        alert s
                     switch args[0]
                         
                         when "dist"

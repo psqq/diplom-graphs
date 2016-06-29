@@ -40,6 +40,7 @@ class CanvasGraphConstructor
         $(@can).mousedown (e) =>
             vname = @graph_drawer.get_vertex_byxy @mouse
             if vname? and @mouse.target? and @mouse.dragtype == "link"
+                return if @mouse.target == vname
                 @graph.add_link @mouse.target, vname
                 return
             @mouse.target = vname

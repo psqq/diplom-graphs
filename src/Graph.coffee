@@ -44,14 +44,13 @@ class Graph
         used = {}
         used[s] = true
         res = {}
-        res[u] = {} for u in @vertices
+        res[u] = {subvertices:[],dist:0} for u in @vertices
         res[s].dist = 0
         res[s].subvertices = []
         while q.length > 0
             v = q.shift()
-            res[v].subvertices = [] if not res[v].subvertices?
             for u in @vertices
-                if used[u] and res[u].dist > res[v].dist
+                if used[u] and @is_link(v, u) and res[u].dist > res[v].dist
                     res[v].subvertices.push u
                 if @is_link(v, u) and not used[u]
                     res[v].subvertices.push u

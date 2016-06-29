@@ -79,7 +79,12 @@ class CanvasGraphConstructor
                             _print "Расстояние между вершинами: " + @graph.dist(args[1], args[2])
                         
                         when "leaves"
-                            _print @graph.leaves args[1]
+                            _print "Листья: " + @graph.leaves args[1]
+
+                        when "next"
+                            v = args[1]
+                            return if not v?
+                            _print "Вершины следующие за вершиной '#{v}': " + @graph.next_vertices v
 
                 # Delete vertex
                 when 'd'

@@ -88,7 +88,7 @@ class Graph
             t[0] = @dist v
             t[1] = @previous_vertices(v).length
             t[2] = @next_vertices(v).length
-            t[3] = '(' + @dists_to_leaves(v).join(sep) + ')'
+            t[3] = '(' + @dists_to_leaves(v).sort().join(sep) + ')'
             res[v] = t.join sep
         return res
 
